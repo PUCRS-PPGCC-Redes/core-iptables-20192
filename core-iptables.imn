@@ -1,0 +1,542 @@
+node n1 {
+    type router
+    model host
+    network-config {
+	hostname PC1
+	!
+	interface eth0
+	 ip address 192.168.1.10/24
+	!
+    }
+    canvas c1
+    iconcoords {873.0 135.0}
+    labelcoords {873.0 167.0}
+    interface-peer {eth0 n4}
+}
+
+node n2 {
+    type router
+    model host
+    network-config {
+	hostname PC2
+	!
+	interface eth0
+	 ip address 192.168.1.11/24
+	!
+    }
+    canvas c1
+    iconcoords {902.0 226.0}
+    labelcoords {902.0 258.0}
+    interface-peer {eth0 n4}
+}
+
+node n3 {
+    type router
+    model host
+    network-config {
+	hostname PC3
+	!
+	interface eth0
+	 ip address 192.168.1.12/24
+	!
+    }
+    canvas c1
+    iconcoords {876.0 309.0}
+    labelcoords {876.0 341.0}
+    interface-peer {eth0 n4}
+}
+
+node n4 {
+    type lanswitch
+    network-config {
+	hostname Switch
+	!
+    }
+    canvas c1
+    iconcoords {749.0 223.0}
+    labelcoords {749.0 247.0}
+    interface-peer {e0 n1}
+    interface-peer {e1 n2}
+    interface-peer {e2 n3}
+    interface-peer {e3 n5}
+}
+
+node n5 {
+    type router
+    model router
+    network-config {
+	hostname Firewall1
+	!
+	interface eth1
+	 ip address 10.0.0.1/24
+	!
+	interface eth0
+	 ip address 192.168.1.1/24
+	!
+    }
+    canvas c1
+    iconcoords {609.0 223.0}
+    labelcoords {609.0 255.0}
+    custom-image /usr/share/core/icons/normal/router_red.gif
+    interface-peer {eth0 n4}
+    interface-peer {eth1 n6}
+}
+
+node n6 {
+    type router
+    model host
+    network-config {
+	hostname HTTP-Server1
+	!
+	interface eth1
+	 ip address 10.0.1.10/24
+	!
+	interface eth0
+	 ip address 10.0.0.10/24
+	!
+    }
+    canvas c1
+    iconcoords {389.0 190.0}
+    labelcoords {389.0 222.0}
+    interface-peer {eth0 n5}
+    services {DefaultRoute HTTP SSH}
+    interface-peer {eth1 n11}
+}
+
+node n10 {
+    type router
+    model router
+    network-config {
+	hostname Firewall4
+	!
+	interface eth1
+	 ip address 10.0.4.1/24
+	!
+	interface eth0
+	 ip address 192.168.2.1/24
+	!
+    }
+    canvas c1
+    iconcoords {125.0 346.0}
+    labelcoords {125.0 378.0}
+    custom-image /usr/share/core/icons/normal/router_red.gif
+    interface-peer {eth0 n14}
+    interface-peer {eth1 n11}
+    custom-config {
+	custom-config-id service:Firewall
+	custom-command Firewall
+	config {
+	files=('firewall.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Firewall:firewall.sh
+	custom-command firewall.sh
+	config {
+	#!/bin/sh
+	iptables -P INPUT DROP
+	
+	}
+    }
+    services {OSPFv2 OSPFv3 zebra Firewall IPForward}
+}
+
+node n11 {
+    type router
+    model router
+    network-config {
+	hostname Internet
+	!
+	interface eth2
+	 ip address 10.0.2.1/24
+	 ipv6 address 2001:0::1/64
+	!
+	interface eth1
+	 ip address 10.0.1.1/24
+	!
+	interface eth0
+	 ip address 10.0.4.2/24
+	!
+    }
+    canvas c1
+    iconcoords {128.0 145.0}
+    labelcoords {116.0 121.0}
+    custom-image /usr/share/core/icons/normal/wlan.gif
+    interface-peer {eth0 n10}
+    services {OSPFv2 OSPFv3 zebra HTTP IPForward}
+    interface-peer {eth1 n6}
+    interface-peer {eth2 n24}
+}
+
+node n12 {
+    type router
+    model host
+    network-config {
+	hostname PC10
+	!
+	interface eth0
+	 ip address 192.168.2.10/24
+	!
+    }
+    canvas c1
+    iconcoords {37.0 558.0}
+    labelcoords {36.0 594.0}
+    interface-peer {eth0 n14}
+}
+
+node n13 {
+    type router
+    model host
+    network-config {
+	hostname PC11
+	!
+	interface eth0
+	 ip address 192.168.2.11/24
+	!
+    }
+    canvas c1
+    iconcoords {229.0 556.0}
+    labelcoords {229.0 592.0}
+    interface-peer {eth0 n14}
+}
+
+node n14 {
+    type lanswitch
+    network-config {
+	hostname Switch
+	!
+    }
+    canvas c1
+    iconcoords {124.0 441.0}
+    labelcoords {124.0 465.0}
+    interface-peer {e0 n12}
+    interface-peer {e1 n13}
+    interface-peer {e2 n10}
+}
+
+node n15 {
+    type router
+    model host
+    network-config {
+	hostname PC20
+	!
+	interface eth0
+	 ip address 192.168.3.10/24
+	!
+    }
+    canvas c1
+    iconcoords {915.0 459.0}
+    labelcoords {924.0 506.0}
+    interface-peer {eth0 n20}
+}
+
+node n16 {
+    type router
+    model host
+    network-config {
+	hostname pc21
+	!
+	interface eth0
+	 ip address 192.168.3.11/24
+	!
+    }
+    canvas c1
+    iconcoords {875.0 586.0}
+    labelcoords {875.0 618.0}
+    interface-peer {eth0 n20}
+}
+
+node n17 {
+    type router
+    model host
+    network-config {
+	hostname PC30
+	!
+	interface eth0
+	 ip address 192.168.4.10/24
+	!
+    }
+    canvas c1
+    iconcoords {380.0 682.0}
+    labelcoords {380.0 714.0}
+    interface-peer {eth0 n21}
+}
+
+node n18 {
+    type router
+    model host
+    network-config {
+	hostname PC32
+	!
+	interface eth0
+	 ip address 192.168.4.12/24
+	!
+    }
+    canvas c1
+    iconcoords {639.0 678.0}
+    labelcoords {639.0 710.0}
+    interface-peer {eth0 n21}
+}
+
+node n19 {
+    type router
+    model host
+    network-config {
+	hostname PC31
+	!
+	interface eth0
+	 ip address 192.168.4.11/24
+	!
+    }
+    canvas c1
+    iconcoords {502.0 676.0}
+    labelcoords {502.0 708.0}
+    interface-peer {eth0 n21}
+}
+
+node n20 {
+    type lanswitch
+    network-config {
+	hostname Switch
+	!
+    }
+    canvas c1
+    iconcoords {871.0 506.0}
+    labelcoords {868.0 535.0}
+    interface-peer {e0 n15}
+    interface-peer {e1 n16}
+    interface-peer {e2 n22}
+}
+
+node n21 {
+    type lanswitch
+    network-config {
+	hostname Switch
+	!
+    }
+    canvas c1
+    iconcoords {486.0 561.0}
+    labelcoords {486.0 585.0}
+    interface-peer {e0 n17}
+    interface-peer {e1 n19}
+    interface-peer {e2 n18}
+    interface-peer {e3 n24}
+}
+
+node n22 {
+    type router
+    model router
+    network-config {
+	hostname Firewall2
+	!
+	interface eth1
+	 ip address 10.0.7.2/24
+	!
+	interface eth0
+	 ip address 192.168.3.1/24
+	!
+    }
+    canvas c1
+    iconcoords {734.0 510.0}
+    labelcoords {734.0 542.0}
+    custom-image /usr/share/core/icons/normal/router_red.gif
+    interface-peer {eth0 n20}
+    interface-peer {eth1 n24}
+}
+
+node n24 {
+    type router
+    model router
+    network-config {
+	hostname Router2
+	!
+	interface eth2
+	 ip address 10.0.2.2/24
+	 ipv6 address 2001:0::2/64
+	!
+	interface eth1
+	 ip address 192.168.4.1/24
+	!
+	interface eth0
+	 ip address 10.0.7.1/24
+	!
+    }
+    canvas c1
+    iconcoords {515.0 416.0}
+    labelcoords {513.0 445.0}
+    interface-peer {eth0 n22}
+    interface-peer {eth1 n21}
+    interface-peer {eth2 n11}
+}
+
+link l1 {
+    nodes {n1 n4}
+    bandwidth 0
+}
+
+link l2 {
+    nodes {n4 n2}
+    bandwidth 0
+}
+
+link l3 {
+    nodes {n4 n3}
+    bandwidth 0
+}
+
+link l4 {
+    nodes {n5 n4}
+    bandwidth 0
+}
+
+link l5 {
+    nodes {n6 n5}
+    bandwidth 0
+}
+
+link l9 {
+    nodes {n14 n12}
+    bandwidth 0
+}
+
+link l10 {
+    nodes {n14 n13}
+    bandwidth 0
+}
+
+link l11 {
+    nodes {n14 n10}
+    bandwidth 0
+}
+
+link l12 {
+    nodes {n10 n11}
+    bandwidth 0
+}
+
+link l13 {
+    nodes {n15 n20}
+    bandwidth 0
+}
+
+link l14 {
+    nodes {n20 n16}
+    bandwidth 0
+}
+
+link l15 {
+    nodes {n21 n17}
+    bandwidth 0
+}
+
+link l16 {
+    nodes {n21 n19}
+    bandwidth 0
+}
+
+link l17 {
+    nodes {n21 n18}
+    bandwidth 0
+}
+
+link l20 {
+    nodes {n22 n20}
+    bandwidth 0
+}
+
+link l21 {
+    nodes {n24 n22}
+    bandwidth 0
+}
+
+link l22 {
+    nodes {n24 n21}
+    bandwidth 0
+}
+
+link l6 {
+    nodes {n11 n6}
+    bandwidth 0
+}
+
+link l7 {
+    nodes {n11 n24}
+    bandwidth 0
+}
+
+annotation a1 {
+    iconcoords {695 25 978 392}
+    type oval
+    label {LAN1}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    effects {bold}
+    canvas c1
+}
+
+annotation a3 {
+    iconcoords {-1.0 399.0 273.0 659.0}
+    type oval
+    label {LAN2}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    effects {bold}
+    canvas c1
+}
+
+annotation a4 {
+    iconcoords {687 408 990 630}
+    type oval
+    label {LAN4}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    effects {bold}
+    canvas c1
+}
+
+annotation a5 {
+    iconcoords {296.0 517.0 707.0 748.0}
+    type oval
+    label {LAN3}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    effects {bold}
+    canvas c1
+}
+
+canvas c1 {
+    name {Canvas1}
+}
+
+option global {
+    interface_names no
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    show_api no
+    background_images no
+    annotations yes
+    grid yes
+    traffic_start 0
+}
+
+option session {
+}
+
